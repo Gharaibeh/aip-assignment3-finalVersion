@@ -8,5 +8,6 @@ const userType {
        Doctor:1,
        Patient:2
 };
+const monthes = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
  
