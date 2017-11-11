@@ -2,6 +2,8 @@ var mongoose = require('../db/mongoose.js')
 var User = require('../db/models/User.js')
 var Wrong = require('./Check.js');
 
+// user authentication page
+//check the login status
 exports.login = function (req) {
     if ( promise = Wrong.email(req,true)) {
         return promise;
@@ -9,6 +11,7 @@ exports.login = function (req) {
     if ( promise = Wrong.password(req,true)) {
         return promise;
     }
+    // if there is an ID, and return wrong password in case wrong
     if (req.query.Id)
     {
         return Promise.resolve({Error:"You already login"});
@@ -25,15 +28,16 @@ exports.login = function (req) {
                 });
             }
         }
-        else {
+        else { // else the user hasn't been found
             return Promise.resolve({Error: "User with this email not found"});
         }
     });
 
 }
 
-
+// register a user 
 exports.register = function (req) {
+    //check if there is ID
     if (req.query.Id)
     {
         return Promise.resolve({Error:"You already login"});
@@ -50,6 +54,7 @@ exports.register = function (req) {
     if(!req.query.FullName) {
         return Promise.resolve({Error: "Parameter (FullName) is required"})
     }
+    // user object contains FullName, Email, Type and Salt as random
     var user = new User({
         FullName: req.query.FullName,
         Email: req.query.Email,
@@ -83,7 +88,7 @@ exports.register = function (req) {
         return user;
     }).then(function (registerUser) {
         if (registerUser) {
-                return Promise.resolve({Ok:"Your registration complete and you logged in",Id:registerUser._id,User:registerUser});
+                return Promise.resolve({Ok:"Your registration complete and you logged in",  Id:registerUser._id,User:registerUser});
         }
         else {
             return Promise.resolve({Error: "Registration error"});

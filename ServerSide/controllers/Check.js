@@ -1,4 +1,6 @@
+// Input checks 
 
+// email check if null or doesnt containt @
 exports.email = function (req,required) {
     if(!req.query.Email && required) {
         return Promise.resolve({Error: "Parameter (Email) is required"})
@@ -14,6 +16,7 @@ exports.email = function (req,required) {
     return null;
 }
 
+// check the password if it is not on the app standards (8 characters min with a special char)
 exports.password = function (req,required) {
     if(!req.query.Password && required) {
         return Promise.resolve({Error: "Parameter (Password) is required"})
@@ -30,12 +33,13 @@ exports.password = function (req,required) {
     return null;
 }
 
+//check the input parameter if it's Admin, Doctor or Patient
 exports.type = function (req,required) {
     if(!req.query.Type && required) {
         return Promise.resolve({Error: "Parameter (Type) is required"})
     } else {
         if (req.query.Type) {
-            if (req.query.Type != 'Admin' && req.query.Type != 'Doctor' && req.query.Type != 'Patient') {
+            if (req.query.Type != UserType.Type[0] && req.query.Type != UserType.Type[1] && req.query.Type != UserType.Type[2]) {
                 return Promise.resolve({Error: "Parameter (Type) is wrong ,must be one of this['Admin','Doctor','Patient'])"})
             }
         }

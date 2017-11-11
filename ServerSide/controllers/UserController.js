@@ -81,7 +81,7 @@ exports.edit = function (req) {
                if (currentUser) {
                    var search = {Email: req.query.Email, Type: req.query.Type};
                    if (currentUser.Type == UserType.Type[0] || currentUser.Type == UserType.Type[1]) {
-                       if (currentUser.Type == 'Doctor') {
+                       if (currentUser.Type == UserType.Type[1]) {
                            search.Doctor = currentUser._id;
                        }
                        return User.findOne(search).then(function (findedUser) {
