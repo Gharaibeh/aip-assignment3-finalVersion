@@ -3,6 +3,8 @@ import jQuery from 'jquery';
 import Cookies from 'universal-cookie';
 import { Switch, Route, Link } from 'react-router-dom'
 import apiUrl from '../../settings.js';
+import monthes from '../../constraints';
+
 const cookies = new Cookies();
 
 class UsersForm extends Component{
@@ -26,6 +28,7 @@ this.handleInputChange = this.handleInputChange.bind(this);
 this.handleInputFocus = this.handleInputFocus.bind(this);
   }
  
+    // Search about user based on : FullName, Gender, Email,DOB and City 
   Search() {
       var url = apiUrl + '/users/search?';
       if (this.state.Name) {
@@ -103,6 +106,7 @@ this.handleInputFocus = this.handleInputFocus.bind(this);
         }.bind(this));
     }
     
+    // Show Doctor on top as YOUR DOCTOR IS ""
     UsersHeader() {
         let users = this.state.CurUser.Type == 'Doctor' ? 'Patients' : 'Doctors';
         if (this.state.CurUser.Doctor !== undefined)
@@ -121,10 +125,9 @@ this.handleInputFocus = this.handleInputFocus.bind(this);
         }
         
         
-
+// view all as a table
 TableData (props) {
-    const monthes = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const controlButtonStyle = {
+     const controlButtonStyle = {
         padding: '3px 8px'
     }
     const groupButtonStyle = {

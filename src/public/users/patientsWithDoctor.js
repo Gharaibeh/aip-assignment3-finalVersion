@@ -41,7 +41,7 @@ class PatientsWithDoctorForm extends Component{
         }
         
         
-
+// Table of patients for doctors
 Table (props) {
     const controlButtonStyle = {
         padding: '3px 8px'

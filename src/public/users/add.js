@@ -4,6 +4,12 @@ import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import Cookies from 'universal-cookie';
 import apiUrl from '../../settings.js';
+import monthes from '../../constraints';
+import Email_filter from '../../constraints';
+import dateFromat from '../constraints';
+
+
+
 const cookies = new Cookies();
 
 class AddUserForm extends Component{
@@ -41,8 +47,7 @@ class AddUserForm extends Component{
   }
   
   submitFormHandler(event) {
-        const Email_filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-                if (this.state.FullName === "") {
+                 if (this.state.FullName === "") {
         this.setState({FullName_valid: false});
         } else if (this.state.DateOfBirth === "") {
         this.setState({DateOfBirth_valid: false});
@@ -90,7 +95,7 @@ class AddUserForm extends Component{
 
         handleDateChange(date) {
         this.setState({
-        DateOfBirth: date.format('YYYY-MM-DD')
+        DateOfBirth: date.format(dateFromat)
         })
         }
 
@@ -124,12 +129,13 @@ Response () {
                 return (
 <div className="form-group">
     <label>Date of Birthday</label>
-    <DatePicker type="text" showYearDropdown className="form-control" selected={(this.state.DateOfBirth == '' ?  moment() : moment(this.state.DateOfBirth) )} dateFormat="YYYY-MM-DD" name="DateOfBirth" onChange={this.handleDateChange} onFocus={this.handleInputFocus} required/>
+    <DatePicker type="text" showYearDropdown className="form-control" selected={(this.state.DateOfBirth == '' ?  moment() : moment(this.state.DateOfBirth) )} dateFormat=dateFromat name="DateOfBirth" onChange={this.handleDateChange} onFocus={this.handleInputFocus} required/>
     {danger}
 </div>
                         )
         }
 
+        // Gender feild
         Gender () {
         const danger = this.state.Gender_valid ? '' : <div className="text-danger">Select Gender.</div>;
                 return (
@@ -144,6 +150,7 @@ Response () {
                         )
         }
         
+// City field
         City () {
         const danger = this.state.City_valid ? '' : <div className="text-danger">Enter City.</div>;
                 return (
@@ -154,7 +161,7 @@ Response () {
 </div>
                         )
         }
-
+// email field
         Email () {
         const danger = this.state.Email_valid ? '' : <div className="text-danger">Check E-mail address.</div>;
                 return (
@@ -165,6 +172,8 @@ Response () {
 </div>
                         )
         }
+
+// password field
 
         Password () {
         const danger = this.state.Password_valid ? '' : <div className="text-danger">Check Password.</div>;
@@ -177,6 +186,7 @@ Response () {
                         )
         }
 
+// re-password field
         repeat_Password () {
         const danger = this.state.repeat_Password_valid ? '' : <div className="text-danger">Repeat Password.</div>;
                 return (
@@ -188,6 +198,7 @@ Response () {
                         )
         }
 
+// Render the result after that
         render () {
         return (
 <div className="container">

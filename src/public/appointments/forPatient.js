@@ -19,6 +19,7 @@ class PatientAppointmentsForm extends Component{
 
   }
  
+    // find By ID form
   componentWillMount() {
         var url = apiUrl + '/users/findById';
         if (!(cookies.get('Id') === undefined))
@@ -57,7 +58,8 @@ class PatientAppointmentsForm extends Component{
                         )
         }
         
-        
+    
+        // View the result on a table
 
 Table (props) {
     var url = apiUrl + '/users/findById';

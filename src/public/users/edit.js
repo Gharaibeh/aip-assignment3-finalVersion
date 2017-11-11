@@ -8,6 +8,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const cookies = new Cookies();
 
+// Edit user profile
 class EditUserForm extends Component{
     constructor(props) {
     super(props);
@@ -170,7 +171,7 @@ Response () {
 
        
 
-
+// render the result
         render () {
         return (
 <div className="container">

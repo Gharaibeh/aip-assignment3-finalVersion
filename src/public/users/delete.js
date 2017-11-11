@@ -5,6 +5,8 @@ import { Switch, Route, Link } from 'react-router-dom'
 import apiUrl from '../../settings.js';
 const cookies = new Cookies();
 
+// Delete user page
+
 class DeleteUserForm extends Component{
     constructor(props) {
     super(props);
