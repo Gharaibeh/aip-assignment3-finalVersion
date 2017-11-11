@@ -1,5 +1,6 @@
 var mongoose = require('../db/mongoose.js')
 var User = require('../db/models/User.js')
+var UserType = require('../db/models/userType.js')
 var Wrong = require('./Check.js');
 
 function check(req){
@@ -26,9 +27,9 @@ exports.add = function (req) {
     if (err = check(req)) {
         return err;
     }
-    return User.findOne({_id:req.query.CurrentUserId,Type:'Doctor'}).then(function (currentUser) {
+    return User.findOne({_id:req.query.CurrentUserId,Type:UserType.Type[1]}).then(function (currentUser) {
         if (currentUser) {
-            return User.findOne({Email: req.query.Email, Type: 'Patient',Doctor: currentUser._id}).then(function (findedUser) {
+            return User.findOne({Email: req.query.Email, Type: UserType.Type[2],Doctor: currentUser._id}).then(function (findedUser) {
                 if (findedUser) {
                     var Appointment = {
                         Date: new Date(req.query.Date), 
@@ -78,9 +79,9 @@ exports.edit = function (req) {
     {
         return Promise.resolve({Error:"Parameter (Id) is required"});
     }
-    return User.findOne({_id:req.query.CurrentUserId,Type:'Doctor'}).then(function (currentUser) {
+    return User.findOne({_id:req.query.CurrentUserId,Type:UserType.Type[1]}).then(function (currentUser) {
         if (currentUser) {
-            return User.findOne({Email: req.query.Email, Type: 'Patient',Doctor:currentUser._id}).then(function (findedUser) {
+            return User.findOne({Email: req.query.Email, Type: UserType.Type[2],Doctor:currentUser._id}).then(function (findedUser) {
                 if (findedUser) {
                     var Appointment = {
                         Date: new Date(req.query.Date), Medication: req.query.Medication,
@@ -135,9 +136,9 @@ exports.delete = function (req) {
     if(Wrong.email(req,true)) {
         return Wrong.email(req,true);
     }
-    return User.findOne({_id:req.query.CurrentUserId,Type:'Doctor'}).then(function (currentUser) {
+    return User.findOne({_id:req.query.CurrentUserId,Type:UserType.Type[1]}).then(function (currentUser) {
         if (currentUser) {
-            return User.findOne({Email: req.query.Email, Type: 'Patient',Doctor:currentUser._id}).then(function (findedUser) {
+            return User.findOne({Email: req.query.Email, Type: UserType.Type[2],Doctor:currentUser._id}).then(function (findedUser) {
                 if (findedUser) {
                     var AppointmentWasFind = false;
                     var deleteIndex = 0;
