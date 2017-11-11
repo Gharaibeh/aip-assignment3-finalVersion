@@ -16,6 +16,7 @@ class BindDoctorForm extends Component{
 
   }
  
+// Binding doc components
   componentWillMount() {
       var url = apiUrl + '/users/bindDoctor?PatientId='+this.props.match.params.patientId
       +'&DoctorId='+this.props.match.params.doctorId;
@@ -33,6 +34,7 @@ class BindDoctorForm extends Component{
         }.bind(this));
     }
     
+// Response for binding a doctor
     Response () {
         const danger = this.state.Error ? <div className="text-danger">{this.state.Response_txt}</div> : <div>{this.state.Response_txt}</div>;
         return (<div className="form-group">
@@ -40,7 +42,9 @@ class BindDoctorForm extends Component{
     </div>
                         )
         }
-        
+
+
+//Render result
   render () {
     return (
       <div className="container">
