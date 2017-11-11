@@ -5,14 +5,23 @@ import DatePicker from 'react-datepicker';
 import Cookies from 'universal-cookie';
 import apiUrl from '../settings.js';
 const cookies = new Cookies();
+const dateFromat = 'YYY-MM-DD';
+const Email_filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 
+// Registration form page fields with validation like email, password/re-password, DOB, City and Full Name
+
+const userType {
+       Admin:0,
+       Doctor:1,
+       Patient:2
+};
         class RegisterForm extends Component{
         constructor(props) {
         super(props);
                 this.state = {
                 FullName: '',
                         FullName_valid: true,
-                        DateOfBirth: moment().format('YYYY-MM-DD'),
+                        DateOfBirth: moment().format(dateFromat),
                         DateOfBirth_valid: true,
                         City: '',
                         City_valid: true,
@@ -26,7 +35,7 @@ const cookies = new Cookies();
                         repeat_Password_valid: true,
                         Response_txt: '',
                         Error: false,
-                        Type: 'Patient',
+                        Type:  userType.PATIENT.toString(),
                 }
 
         this.submitFormHandler = this.submitFormHandler.bind(this);
@@ -38,8 +47,7 @@ const cookies = new Cookies();
         
 
         submitFormHandler(event) {
-        const Email_filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-                if (this.state.FullName === "") {
+                 if (this.state.FullName === "") {
         this.setState({FullName_valid: false});
         } else if (this.state.DateOfBirth === "") {
         this.setState({DateOfBirth_valid: false});
@@ -74,9 +82,9 @@ const cookies = new Cookies();
                this.setState({Response_txt : res.Ok}); 
               const Type = res.User.Type;
               cookies.set('Id',res.Id, { path: '/' });
-                  if (Type == 'Admin' || Type == 'Doctor') {
+                  if (Type == userType.Admin.toString() || Type == userType.Doctor.toString()) {
                  window.location.replace(window.location.origin + '/users');
-              } else if (Type == 'Patient') {
+              } else if (Type == userType.Patient.toString()) {
                    window.location.replace(window.location.origin + '/appointments');
               } 
             }
@@ -94,7 +102,7 @@ const cookies = new Cookies();
 
         handleDateChange(date) {
         this.setState({
-        DateOfBirth: date.format('YYYY-MM-DD')
+        DateOfBirth: date.format(dateFromat)
         })
         }
 
@@ -104,6 +112,7 @@ const cookies = new Cookies();
         })
         }
 
+//Error response
 Response () {
         const danger = this.state.Error ? <div className="text-danger">{this.state.Response_txt}</div> : <div>{this.state.Response_txt}</div>;
         return (<div className="form-group">
@@ -111,7 +120,7 @@ Response () {
     </div>
                         )
         }
-
+// Full name validation
         FullName () {
         const danger = this.state.FullName_valid ? '' : <div className="text-danger">Enter your Full name.</div>;
                 return (
@@ -123,6 +132,7 @@ Response () {
                         )
         }
 
+// DOB validation
         DateOfBirth () {
         const danger = this.state.DateOfBirth_valid ? '' : <div className="text-danger">Enter your Date of Birthday.</div>;
                 return (
@@ -134,6 +144,7 @@ Response () {
                         )
         }
 
+ // Gender Validation
         Gender () {
         const danger = this.state.Gender_valid ? '' : <div className="text-danger">Select your Gender.</div>;
                 return (
@@ -148,6 +159,7 @@ Response () {
                         )
         }
         
+//User type { Patient | Doctor}
         Type () {
                 return (
 <div className="form-group">
@@ -160,6 +172,8 @@ Response () {
                         )
         }
 
+
+//City as a text field 
         City () {
         const danger = this.state.City_valid ? '' : <div className="text-danger">Enter your City.</div>;
                 return (
@@ -171,6 +185,7 @@ Response () {
                         )
         }
 
+//Email format check
         Email () {
         const danger = this.state.Email_valid ? '' : <div className="text-danger">Check your E-mail address.</div>;
                 return (
@@ -182,6 +197,7 @@ Response () {
                         )
         }
 
+//passowrd field 
         Password () {
         const danger = this.state.Password_valid ? '' : <div className="text-danger">Check your Password.</div>;
                 return (
@@ -193,6 +209,7 @@ Response () {
                         )
         }
 
+//Re-Password field
         repeat_Password () {
         const danger = this.state.repeat_Password_valid ? '' : <div className="text-danger">Repeat your Password.</div>;
                 return (

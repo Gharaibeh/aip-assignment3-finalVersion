@@ -13,4 +13,4 @@ Features:
 -Logout
 -Support useful warnings and messages 
 -Admin area so he can control the patients and doctors. 
--Weather service based on doctor/ patientcity 
+-Weather service based on doctor/ patient city 
