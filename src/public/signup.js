@@ -4,17 +4,15 @@ import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import Cookies from 'universal-cookie';
 import apiUrl from '../settings.js';
+import Email_filter from '../constraints';
+import dateFromat from '../constraints';
+import userType from '../constaints';
+
 const cookies = new Cookies();
-const dateFromat = 'YYY-MM-DD';
-const Email_filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 
 // Registration form page fields with validation like email, password/re-password, DOB, City and Full Name
 
-const userType {
-       Admin:0,
-       Doctor:1,
-       Patient:2
-};
+
         class RegisterForm extends Component{
         constructor(props) {
         super(props);

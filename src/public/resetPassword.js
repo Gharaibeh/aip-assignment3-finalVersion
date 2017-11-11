@@ -2,8 +2,12 @@ import React, { Component}  from 'react';
 import jQuery from 'jquery'; 
 import Cookies from 'universal-cookie';
 import apiUrl from '../settings.js';
+import Email_filter from '../constraints';
+import dateFromat from '../constraints';
+import userType from '../constaints';
 const cookies = new Cookies();
 
+// Reset password form 
 class ResetPasswordForm extends Component{
     constructor(props) {
     super(props);
@@ -26,10 +30,9 @@ class ResetPasswordForm extends Component{
   
   
   
-  
-  submitFormHandler(event) {
-        const Email_filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-               if (! Email_filter.test(this.state.Email)) {
+// submission form to reset password    
+submitFormHandler(event) {
+                if (! Email_filter.test(this.state.Email)) {
         this.setState({Email_valid: false});
         } else if (this.state.Password === "") {
         this.setState({Password_valid: false});
@@ -69,7 +72,8 @@ class ResetPasswordForm extends Component{
         [event.target.name + '_valid'] : true
         })
         }
-  
+
+// reset response
 Response () {
         const danger = this.state.Error ? <div className="text-danger">{this.state.Response_txt}</div> : <div>{this.state.Response_txt}</div>;
         return (<div className="form-group">
@@ -77,6 +81,8 @@ Response () {
     </div>
                         )
         }
+        
+//email to reset
 Email () {
         const danger = this.state.Email_valid ? '' : <div className="text-danger">Check E-mail address.</div>;
                 return (
@@ -88,7 +94,8 @@ Email () {
                         )
         }
 
-        Password () {
+// password to reset (new)
+Password () {
         const danger = this.state.Password_valid ? '' : <div className="text-danger">Check Password.</div>;
                 return (
 <div className="form-group">
@@ -99,7 +106,9 @@ Email () {
                         )
         }
 
-        repeat_Password () {
+
+// Repeated password (new)    
+repeat_Password () {
         const danger = this.state.repeat_Password_valid ? '' : <div className="text-danger">Repeat Password.</div>;
                 return (
 <div className="form-group">
@@ -113,11 +122,14 @@ Email () {
        
 
 
-        render () {
+  //Render the result
+    
+    render () {
         return (
 <div className="container">
     <form onSubmit={this.submitFormHandler} className="col-lg-6 col-lg-offset-3">
-        <h1>Reset password</h1>
+  
+            <h1>Reset password</h1>
         {this.Response()}
         {this.Email()}
         {this.Password()}
