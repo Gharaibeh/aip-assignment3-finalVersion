@@ -12,8 +12,7 @@ var UserTypeSchema = new mongoose.Schema({
 },{
     toObject: { virtuals: true },
     toJSON: { virtuals: true }
-})
-
+});
 
  
- 
+var emailSearchKey = '/Email_1 dup key/';

@@ -63,15 +63,18 @@ exports.register = function (req) {
     });
 
 
+    // user gender 
     if (req.query.Gender) {
         if ( promise = Wrong.gender(req,true)) {
             return promise;
         }
         user.Gender = req.query.Gender;
     }
+    //user city 
     if (req.query.City) {
         user.City = req.query.City;
     }
+    // user DOB
     if (req.query.DateOfBirth) {
         if ( promise = Wrong.date(req,true)) {
             return promise;
@@ -79,6 +82,7 @@ exports.register = function (req) {
         user.DateOfBirth = req.query.DateOfBirth;
     }
 
+    // user password
     user.Password = user.encryptPassword(req.query.Password);
     return user.save(function (err, user, affected) {
 

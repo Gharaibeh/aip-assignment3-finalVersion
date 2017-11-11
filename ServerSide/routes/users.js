@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var controller = require('../controllers/UserController.js');
+var emailSearchKey = require('../db/models/userType.js');
 
 
 
@@ -10,7 +11,7 @@ router.get('/add', function (req, res, next) {
             res.json(document);
         },
         function (err) {
-            if (err.errmsg.search(/Email_1 dup key/) != -1) {
+            if (err.errmsg.search(emailSearchKey) != -1) {
                 res.json({Error:"This email is busy"});
             }
             else if (err.message.search(/Cast to ObjectId failed/) != -1)
@@ -30,7 +31,7 @@ router.get('/edit', function (req, res, next) {
             res.json(document);
         },
         function (err) {
-            if (err.errmsg.search(/Email_1 dup key/) != -1) {
+            if (err.errmsg.search(emailSearchKey) != -1) {
                 res.json({Error:"This email is busy"});
             }
             else if (err.message.search(/Cast to ObjectId failed/) != -1)
@@ -50,15 +51,7 @@ router.get('/resetPassword', function (req, res, next) {
     controller.resetPassword(req).then(function (document) {
             res.json(document);
         },
-        function (err) {
-            if (err.message.search(/Cast to ObjectId failed/) != -1)
-            {
-                res.json({Error:"User with this id not found"})
-            }
-            else {
-                res.json(err);
-            }
-        })
+        errorCheck(err))
 
 });
 
@@ -69,15 +62,7 @@ router.get('/search', function (req, res, next) {
     controller.search(req).then(function (document) {
             res.json(document);
         },
-        function (err) {
-        if (err.message.search(/Cast to ObjectId failed/) != -1)
-        {
-            res.json({Error:"User with this id not found"})
-        }
-        else {
-            res.json(err);
-        }
-        })
+         errorCheck(err))
 });
 
 
@@ -87,15 +72,7 @@ router.get('/delete', function (req, res, next) {
     controller.delete(req).then(function (document) {
             res.json(document);
         },
-        function (err) {
-            if (err.message.search(/Cast to ObjectId failed/) != -1)
-            {
-                res.json({Error:"User with this id not found"})
-            }
-            else {
-                res.json(err);
-            }
-        })
+        errorCheck(err))
 });
 
 
@@ -105,15 +82,7 @@ router.get('/patients', function (req, res, next) {
     controller.allPatients(req).then(function (document) {
             res.json(document);
         },
-        function (err) {
-            if (err.message.search(/Cast to ObjectId failed/) != -1)
-            {
-                res.json({Error:"User with this id not found"})
-            }
-            else {
-                res.json(err);
-            }
-        })
+        errorCheck(err))
 });
 
 // Testing function for debugging, displays all users from the database
@@ -147,15 +116,7 @@ router.get('/findById', function (req, res, next) {
     controller.findById(req).then(function (document) {
             res.send(document);
         },
-        function (err) {
-            if (err.message.search(/Cast to ObjectId failed/) != -1)
-            {
-                res.json({Error:"User with this id not found"})
-            }
-            else {
-                res.json(err);
-            }
-        })
+        errorCheck(err))
 });
  
 
@@ -167,5 +128,18 @@ router.get('/bindDoctor', function (req, res, next) {
             res.json(err);
         })
 });
+
+
+function errorCheck(err){
+    function (err) {
+            if (err.message.search(/Cast to ObjectId failed/) != -1)
+            {
+                res.json({Error:"User with this id not found"})
+            }
+            else {
+                res.json(err);
+            }
+        }
+                    }
 
 module.exports = router;
