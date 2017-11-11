@@ -1,6 +1,7 @@
 var crypto = require('crypto');
 var mongoose = require('mongoose');
 
+//Mongo Schema ajd user type structure
 var UserSchema = new mongoose.Schema({
     FullName: {
         type: String,
@@ -61,13 +62,17 @@ var UserSchema = new mongoose.Schema({
 })
 
 
+// Password Encryption as hex 
 UserSchema.methods.encryptPassword = function (password) {
     return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
 }
 
+// user check schema
 UserSchema.methods.checkPass = function (pass) {
     return this.encryptPassword(pass) === this.Password;
 }
+
+// user model export ..
 
 var UserModel = mongoose.model('User', UserSchema);
 

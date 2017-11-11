@@ -1,8 +1,9 @@
 var mongoose = require('../db/mongoose.js')
 var User = require('../db/models/User.js')
+var UserType = require('../db/models/userType.js')
 var Wrong = require('./Check.js');
 
-
+// user combine object (add a user to DB)
 exports.add = function (req) {
     if (!req.query.Id) {
         return Promise.resolve({Error:"Parameter (Id) is required"})
@@ -23,9 +24,9 @@ exports.add = function (req) {
                 Email: req.query.Email,
                 salt: Math.random() + '',
             });
-                if (currentUser.Type === 'Admin') {
+                if (currentUser.Type === UserType.Type[1]) {
                     user.Type = 'Doctor';
-                } else if (currentUser.Type === 'Doctor') {
+                } else if (currentUser.Type === userType.Type[2]) {
                     user.Type = 'Patient'
                     user.Doctor = currentUser._id;
                 } else {
@@ -63,7 +64,9 @@ exports.add = function (req) {
     });
 }
 
+// user  object (edit a user to DB)
 exports.edit = function (req) {
+    // checking the ID first
     if (!req.query.Id) {
         return Promise.resolve({Error:"Parameter (Id) is required"})
     }
@@ -73,10 +76,11 @@ exports.edit = function (req) {
     if ( promise = Wrong.type(req,true)) {
         return promise;
     }
+    // if true continue to determine the object type {Admin, Doctor or Patient}
             return User.findOne({_id: req.query.Id}).then(function (currentUser) {
                if (currentUser) {
                    var search = {Email: req.query.Email, Type: req.query.Type};
-                   if (currentUser.Type == 'Admin' || currentUser.Type == 'Doctor') {
+                   if (currentUser.Type == UserType.Type[0] || currentUser.Type == UserType.Type[1]) {
                        if (currentUser.Type == 'Doctor') {
                            search.Doctor = currentUser._id;
                        }
@@ -124,6 +128,7 @@ exports.edit = function (req) {
 
 }
 
+// reset password part
 exports.resetPassword = function (req) {
     if (!req.query.Id) {
         return Promise.resolve({Error:"Parameter (Id) is required"})
@@ -167,6 +172,7 @@ exports.resetPassword = function (req) {
 });
 }
 
+// return the user deletion result
 exports.delete = function (req) {
     if ( promise = Wrong.email(req,true)) {
         return promise;
@@ -179,12 +185,12 @@ exports.delete = function (req) {
 
             return User.findOne({_id: req.query.Id}).then(function (currentUser) {
                 if (currentUser) {
-                    if ((currentUser.Type === 'Admin' && req.query.Type != 'Doctor')
-                        || (currentUser.Type === 'Doctor' && req.query.Type != 'Patient')) {
+                    if ((currentUser.Type === UserType.Type[0] && req.query.Type != UserType.Type[1])
+                        || (currentUser.Type === UserType.Type[1] && req.query.Type != UserType.Type[2])) {
                         return Promise.resolve({Error: "You dont have rights for this action"});
                     } else {
                         var search = {Email: req.query.Email, Type: req.query.Type};
-                        if (currentUser.Type === 'Doctor') {
+                        if (currentUser.Type === UserType.Type[1]) {
                             search.Doctor = currentUser._id;
                         }
                         return User.findOne(search).then(function (findedUser) {
@@ -231,11 +237,11 @@ exports.search = function (req) {
             if (req.query.DateOfBirth) {
                 searchFields.DateOfBirth = new RegExp(req.query.DateOfBirth,'i');
             }
-            if (currentUser.Type == 'Doctor') {
-                searchFields.Type = 'Patient';
+            if (currentUser.Type == UserType.Type[1]) {
+                searchFields.Type = UserType.Type[2];
                 searchFields.Doctor = currentUser._id;
-            } else if(currentUser.Type == 'Admin' || currentUser.Type == 'Patient') {
-                searchFields.Type = 'Doctor';
+            } else if(currentUser.Type == UserType.Type[0] || currentUser.Type == UserType.Type[2]) {
+                searchFields.Type = UserType.Type[1];
             } else {
                 return Promise.resolve({Error:"You are not login"});
             }
@@ -306,6 +312,7 @@ exports.findById = function (req) {
     });
 }
 
+// binding pateints with doctors part
 exports.bindDoctor = function (req) {
     if (!req.query.PatientId) {
         return Promise.resolve({Error:"Parameter (PatientId) is required"})

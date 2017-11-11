@@ -44,7 +44,7 @@ router.get('/edit', function (req, res, next) {
 
 });
 
-// change Password
+// change Password for that user
 
 router.get('/resetPassword', function (req, res, next) {
     controller.resetPassword(req).then(function (document) {

@@ -1,6 +1,8 @@
+
 var express = require('express');
 var router = express.Router();
 var controller = require('../controllers/AuthController.js');
+
 
 
 // entrance
@@ -12,6 +14,7 @@ router.get('/login', function (req, res, next) {
             res.json({Error:err});
         })
 });
+
 
 
 // registration, and login after successful registration
@@ -28,7 +31,7 @@ router.get('/register', function (req, res, next) {
         })
 });
 
-
+// check the auth process 
 router.get('/check', function (req, res, next) {
             res.json({Ok:"Backend is enabled"});
 });

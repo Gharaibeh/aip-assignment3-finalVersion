@@ -1,6 +1,8 @@
+
 var express = require('express');
 var router = express.Router();
 var controller = require('../controllers/AppointmentController.js');
+
 
  
 router.get('/add', function (req, res, next) {
@@ -14,7 +16,6 @@ router.get('/add', function (req, res, next) {
 
 
 // change meeting with doctor
-
 router.get('/edit', function (req, res, next) {
     controller.edit(req).then(function (document) {
             res.json(document);
@@ -23,6 +24,7 @@ router.get('/edit', function (req, res, next) {
             res.json(err);
         })
 });
+
 
 
 // delete appointment with the doctor
