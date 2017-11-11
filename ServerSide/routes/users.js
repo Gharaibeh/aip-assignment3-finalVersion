@@ -10,18 +10,7 @@ router.get('/add', function (req, res, next) {
     controller.add(req).then(function (document) {
             res.json(document);
         },
-        function (err) {
-            if (err.errmsg.search(emailSearchKey) != -1) {
-                res.json({Error:"This email is busy"});
-            }
-            else if (err.message.search(/Cast to ObjectId failed/) != -1)
-            {
-                res.json({Error:"User with this id not found"})
-            }
-            else {
-                res.json({Error: err});
-            }
-        })
+         errorCheck(err))
 });
 
 // edit the user
@@ -30,18 +19,7 @@ router.get('/edit', function (req, res, next) {
     controller.edit(req).then(function (document) {
             res.json(document);
         },
-        function (err) {
-            if (err.errmsg.search(emailSearchKey) != -1) {
-                res.json({Error:"This email is busy"});
-            }
-            else if (err.message.search(/Cast to ObjectId failed/) != -1)
-            {
-                res.json({Error:"User with this id not found"})
-            }
-            else {
-                res.json({Error: err});
-            }
-        })
+        errorCheck(err))
 
 });
 
@@ -130,6 +108,7 @@ router.get('/bindDoctor', function (req, res, next) {
 });
 
 
+// mutual method to check the err
 function errorCheck(err){
     function (err) {
             if (err.message.search(/Cast to ObjectId failed/) != -1)
